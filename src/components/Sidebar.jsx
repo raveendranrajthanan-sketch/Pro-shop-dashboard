@@ -1,5 +1,6 @@
 
 import { NavLink } from "react-router";
+
 import {
   LayoutDashboard,
   Package,
@@ -13,15 +14,36 @@ import {
 
 function Sidebar({ isOpen, onClose }) {
   const menuItems = [
-    { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { name: "Products", path: "/products", icon: Package },
-    { name: "Categories", path: "/categories", icon: Tags },
-    { name: "Analytics", path: "/analytics", icon: ChartNoAxesCombined },
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      name: "Products",
+      path: "/products",
+      icon: Package,
+    },
+    {
+      name: "Categories",
+      path: "/categories",
+      icon: Tags,
+    },
+    {
+      name: "Analytics",
+      path: "/analytics",
+      icon: ChartNoAxesCombined,
+    },
   ];
 
   return (
     <>
-      <aside className={`sidebar responsive-sidebar ${isOpen ? "sidebar-open" : ""}`}>
+      <aside
+        className={`sidebar responsive-sidebar ${
+          isOpen ? "sidebar-open" : ""
+        }`}
+      >
+        {/* Sidebar Brand */}
         <div className="sidebar-brand">
           <div className="brand-icon">
             <ShoppingBag size={23} />
@@ -41,6 +63,7 @@ function Sidebar({ isOpen, onClose }) {
           </button>
         </div>
 
+        {/* Main Menu */}
         <p className="sidebar-label">MAIN MENU</p>
 
         <nav className="sidebar-menu">
@@ -63,17 +86,30 @@ function Sidebar({ isOpen, onClose }) {
           })}
         </nav>
 
+        {/* Sidebar Settings */}
         <div className="sidebar-bottom">
-          <Settings size={19} />
-          <span>Settings</span>
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              `sidebar-link settings-sidebar-link ${
+                isActive ? "active" : ""
+              }`
+            }
+            onClick={onClose}
+          >
+            <Settings size={19} />
+            <span>Settings</span>
+          </NavLink>
         </div>
 
+        {/* Sidebar Footer */}
         <div className="sidebar-footer">
           <Store size={18} />
           <span>Pro Shop Dashboard</span>
         </div>
       </aside>
 
+      {/* Mobile Overlay */}
       {isOpen && (
         <div
           className="mobile-sidebar-overlay"

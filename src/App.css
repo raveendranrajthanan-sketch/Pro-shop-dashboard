@@ -1589,3 +1589,150 @@ body.dark-mode .settings-page-card {
 body.dark-mode .settings-option {
   border-color: #334155;
 }
+
+/* =================================
+   PROFESSIONAL GLOBAL SEARCH
+================================= */
+
+.global-search-popup {
+  width: min(440px, calc(100vw - 30px));
+  max-height: 520px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.global-search-results {
+  padding: 10px 0;
+  max-height: 390px;
+  overflow-y: auto;
+}
+
+.global-search-section {
+  padding: 8px 0;
+}
+
+.global-search-section h4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  margin: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: #8b8fa3;
+}
+
+.global-search-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.global-search-item:hover {
+  background: rgba(99, 102, 241, 0.09);
+}
+
+.global-search-item-icon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  color: #6366f1;
+  background: rgba(99, 102, 241, 0.12);
+}
+
+.global-search-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.global-search-item-info strong {
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.global-search-item-info small {
+  font-size: 11px;
+  color: #9295a5;
+}
+
+.search-empty-message {
+  min-height: 125px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+  text-align: center;
+  color: #9295a5;
+}
+
+.search-empty-message p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.search-empty-message span {
+  font-size: 11px;
+}
+
+.search-clear-btn {
+  display: grid;
+  place-items: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+}
+
+.global-search-view-all {
+  width: calc(100% - 24px);
+  margin: 8px 12px;
+  padding: 11px;
+  border: none;
+  border-radius: 9px;
+  background: rgba(99, 102, 241, 0.10);
+  color: #6366f1;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.global-search-view-all:hover {
+  background: rgba(99, 102, 241, 0.18);
+}
+
+.search-loader {
+  animation: globalSearchSpin 1s linear infinite;
+}
+
+@keyframes globalSearchSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.dark-mode .global-search-item:hover {
+  background: rgba(129, 140, 248, 0.13);
+}
+
+.dark-mode .global-search-view-all {
+  background: rgba(129, 140, 248, 0.15);
+  color: #a5b4fc;
+}

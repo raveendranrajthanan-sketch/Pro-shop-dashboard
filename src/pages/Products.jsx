@@ -1,18 +1,9 @@
 
 import { useEffect, useState } from "react";
-import {
-  Package,
-  RefreshCw,
-  ChevronLeft,
-  ChevronRight,
-  ArrowUpDown,
-  Download,
-  Boxes,
-  AlertTriangle,
-  Filter,
-} from "lucide-react";
+import {Package,RefreshCw,ChevronLeft,ChevronRight,ArrowUpDown,Download,Boxes,AlertTriangle,Filter,} from "lucide-react";
 
 import { getProducts, getCategories } from "../services/api";
+import { useSearchParams } from "react-router";
 import SearchBar from "../components/SearchBar";
 import CategoryFilter from "../components/Categoryfilter";
 import ProductTable from "../components/ProductTable";
@@ -20,16 +11,16 @@ import ProductTable from "../components/ProductTable";
 function Products() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedStock, setSelectedStock] = useState("all");
   const [sortOption, setSortOption] = useState("default");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+  const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
-
+  const [searchTerm, setSearchTerm] = useState(() => searchParams.get("search") || "");
   const fetchProducts = async () => {
     try {
       setLoading(true);
@@ -55,6 +46,11 @@ function Products() {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+  const urlSearch = searchParams.get("search") || "";
+  setSearchTerm(urlSearch);
+  setCurrentPage(1);
+  }, [searchParams]);
   // Stock Summary
   const inStockCount = products.filter(
     (product) => product.stock >= 10
@@ -212,6 +208,7 @@ function Products() {
   };
 
   const resetFilters = () => {
+    setSearchParams({});
     setSearchTerm("");
     setSelectedCategory("all");
     setSelectedStock("all");
