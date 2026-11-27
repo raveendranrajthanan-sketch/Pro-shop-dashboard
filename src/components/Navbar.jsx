@@ -4,6 +4,7 @@ import {Search,Bell,Sun,Moon,ChevronDown,X,User,Settings,LogOut,Check,Package,Ta
 
 import { useNavigate } from "react-router";
 import { getProducts, getCategories } from "../services/api";
+import NotificationPanel from "./NotificationPanel";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ function Navbar() {
   const [categories, setCategories] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchError, setSearchError] = useState("");
+  const [unreadCount, setUnreadCount] = useState(0);
 
   // DARK MODE
   useEffect(() => {
@@ -228,7 +230,7 @@ function Navbar() {
           {searchOpen ? <X size={19} /> : <Search size={19} />}
         </button>
 
-        {/* NOTIFICATIONS BUTTON */}
+        {/* Notifications Button */}
         <button
           className="navbar-icon notification-button"
           aria-label="Notifications"
@@ -236,7 +238,12 @@ function Navbar() {
           title="Notifications"
         >
           <Bell size={19} />
-          <span className="notification-dot"></span>
+
+          {unreadCount > 0 && (
+            <span className="notification-count-badge">
+              {unreadCount > 99 ? "99+" : unreadCount}
+            </span>
+          )}
         </button>
 
         {/* THEME BUTTON */}
@@ -401,43 +408,12 @@ function Navbar() {
           </div>
         )}
 
-        {/* NOTIFICATION POPUP */}
-        {notificationOpen && (
-          <div className="navbar-popup notification-popup">
-            <div className="popup-heading">
-              <strong>Notifications</strong>
-
-              <button
-                onClick={() => setNotificationOpen(false)}
-                aria-label="Close notifications"
-              >
-                <X size={17} />
-              </button>
-            </div>
-
-            <div className="notification-item">
-              <span className="notification-icon">
-                <Check size={17} />
-              </span>
-
-              <div>
-                <strong>Dashboard Ready</strong>
-                <p>Your store dashboard is up to date.</p>
-              </div>
-            </div>
-
-            <div className="notification-item">
-              <span className="notification-icon">
-                <Bell size={17} />
-              </span>
-
-              <div>
-                <strong>Welcome Admin!</strong>
-                <p>Welcome to your admin dashboard.</p>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Advanced Notifications Panel */}
+        <NotificationPanel
+          open={notificationOpen}
+          onClose={() => setNotificationOpen(false)}
+          onUnreadCountChange={setUnreadCount}
+        />
 
         {/* PROFILE POPUP */}
         {profileOpen && (
