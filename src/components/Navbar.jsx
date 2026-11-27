@@ -5,9 +5,11 @@ import {Search,Bell,Sun,Moon,ChevronDown,X,User,Settings,LogOut,Check,Package,Ta
 import { useNavigate } from "react-router";
 import { getProducts, getCategories } from "../services/api";
 import NotificationPanel from "./NotificationPanel";
+import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const navbarRef = useRef(null);
 
   const [searchOpen, setSearchOpen] = useState(false);
@@ -194,18 +196,18 @@ function Navbar() {
     );
   };
 
-  // LOGOUT DEMO
-  const handleLogout = () => {
-    const confirmed = window.confirm(
-      "Are you sure you want to logout?"
-    );
+        // REAL LOGOUT
+        const handleLogout = () => {
+          const confirmed = window.confirm(
+            "Are you sure you want to logout?"
+          );
 
-    if (confirmed) {
-      navigate("/dashboard");
-      setProfileOpen(false);
-      alert("Demo logout completed.");
-    }
-  };
+          if (confirmed) {
+            logout();
+            setProfileOpen(false);
+            navigate("/login", { replace: true });
+          }
+        };
 
   return (
     <header
@@ -264,12 +266,19 @@ function Navbar() {
           aria-label="Admin profile"
           onClick={toggleProfile}
         >
-          <div className="profile-avatar">RR</div>
+          <div className="profile-avatar">
+          {user?.name
+            ?.split(" ")
+            .map((word) => word[0])
+            .join("")
+            .slice(0, 2)
+            .toUpperCase()}
+        </div>
 
-          <div className="profile-info">
-            <strong>Admin User</strong>
-            <span>Administrator</span>
-          </div>
+        <div className="profile-info">
+          <strong>{user?.name || "Admin"}</strong>
+          <span>{user?.role || "Administrator"}</span>
+        </div>
 
           <ChevronDown
             className="profile-chevron"
@@ -416,48 +425,56 @@ function Navbar() {
         />
 
         {/* PROFILE POPUP */}
-        {profileOpen && (
-          <div className="navbar-popup profile-popup">
-            <div className="profile-popup-header">
-              <div className="profile-avatar">RR</div>
+          {profileOpen && (
+            <div className="navbar-popup profile-popup">
+              <div className="profile-popup-header">
+                <div className="profile-avatar">
+                  {user?.name
+                    ?.split(" ")
+                    .map((word) => word[0])
+                    .join("")
+                    .slice(0, 2)
+                    .toUpperCase() || "AD"}
+                </div>
 
-              <div>
-                <strong>Admin User</strong>
-                <p>Administrator</p>
+                <div>
+                  <strong>{user?.name || "Admin"}</strong>
+                  <p>{user?.email || "admin@example.com"}</p>
+                </div>
               </div>
+
+              <button
+                className="profile-menu-item"
+                onClick={() => {
+                  navigate("/profile");
+                  setProfileOpen(false);
+                }}
+              >
+                <User size={17} />
+                My Profile
+              </button>
+
+              <button
+                className="profile-menu-item"
+                onClick={() => {
+                  navigate("/settings");
+                  setProfileOpen(false);
+                }}
+              >
+                <Settings size={17} />
+                Settings
+              </button>
+
+              <button
+                className="profile-menu-item logout-item"
+                onClick={handleLogout}
+              >
+                <LogOut size={17} />
+                Logout
+              </button>
             </div>
+          )}
 
-            <button
-              className="profile-menu-item"
-              onClick={() => {
-                navigate("/profile");
-                setProfileOpen(false);
-              }}
-            >
-              <User size={17} />
-              My Profile
-            </button>
-
-            <button
-              className="profile-menu-item"
-              onClick={() => {
-                navigate("/settings");
-                setProfileOpen(false);
-              }}
-            >
-              <Settings size={17} />
-              Settings
-            </button>
-
-            <button
-              className="profile-menu-item logout-item"
-              onClick={handleLogout}
-            >
-              <LogOut size={17} />
-              Logout
-            </button>
-          </div>
-        )}
       </div>
     </header>
   );
